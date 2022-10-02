@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["es2021"],
+    "target": "ES6",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true
+  },
+  "include": ["./**/*", "./types/*.d.ts"],
+  "exclude": ["node_modules"]
+}
