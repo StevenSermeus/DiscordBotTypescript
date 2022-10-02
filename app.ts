@@ -1,13 +1,10 @@
 import * as dotenv from "dotenv";
 import client from "./config/discordClient";
-import setUpEvent from "./config/setUpEvent";
 dotenv.config();
 import sequelize from "./config/db";
 
-sequelize.sync();
+import init from "./config/init";
 
-client.login(process.env["DISCORD_TOKEN"]);
-
-setUpEvent(client);
+init(client, sequelize);
 
 // Language: typescript
