@@ -10,8 +10,9 @@
     "noPropertyAccessFromIndexSignature": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "strict": true
+    "strict": true,
+    "outDir": "./dist"
   },
   "include": ["./**/*", "./types/*.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules, db, dist"]
 }
