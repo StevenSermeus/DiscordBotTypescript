@@ -7,6 +7,7 @@ function setUpEvent(client: Client) {
   client.on("interactionCreate", (interaction: any) => {
     interactionHandler(interaction);
   });
+
 }
 
 export default setUpEvent;

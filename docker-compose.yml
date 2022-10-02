@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: discord
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - db
+  bot:
+    build: .
+    container_name: bot
+    networks:
+      - db
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+
+volumes:
+  db:
+  app:
+networks:
+  db:

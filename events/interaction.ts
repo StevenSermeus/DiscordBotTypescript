@@ -1,7 +1,6 @@
 import commands from "../commands";
 import { CommandInteraction } from "discord.js";
 function interactionHandler(interaction: CommandInteraction) {
-  console.log(interaction);
   if (!interaction.isCommand()) return;
   const command = commands.find(
     (command) => command.name === interaction.commandName

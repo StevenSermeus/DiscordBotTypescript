@@ -1,6 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import * as dotenv from "dotenv";
-dotenv.config();
+
 
 function createClient() {
   const client = new Client({

@@ -24,13 +24,13 @@ async function readyHandeler() {
           .setName(command.name)
           .setDescription(command.description);
         if (command.options.length > 0) {
-          for (let option of command.options) {
-            commandData.addStringOption(option);
-          }
-        }
-        if (command.choices.length > 0) {
-          for (let choice of command.choices) {
-            commandData.addStringOption(choice);
+          for (let optionData of command.options) {
+            commandData.addStringOption((option) =>
+              option
+                .setName(optionData.name)
+                .setDescription(optionData.description)
+                .setRequired(optionData.required)
+            );
           }
         }
 
