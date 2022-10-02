@@ -4,9 +4,7 @@ import setUpEvent from "./config/setUpEvent";
 dotenv.config();
 import sequelize from "./config/db";
 
-sequelize.databaseVersion().then((version: string) => {
-  console.log(version);
-});
+sequelize.sync();
 
 client.login(process.env["DISCORD_TOKEN"]);
 
