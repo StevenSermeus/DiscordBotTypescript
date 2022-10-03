@@ -6,7 +6,11 @@ import {
   AllowNull,
   NotEmpty,
   Default,
+  BelongsToMany,
 } from "sequelize-typescript";
+
+import UserM from "./User";
+import UserGuild from "./UserGuild";
 
 interface GuildI {
   id: string;
@@ -14,13 +18,14 @@ interface GuildI {
   isWordle: boolean;
   isRanking: boolean;
   guessWord: string;
+  users: Array<UserM>;
 }
 
 @Table({
-  tableName: "guilds",
+  tableName: "Guilds",
   timestamps: true,
 })
-export default class Guild extends Model implements GuildI {
+export default class GuildM extends Model implements GuildI {
   @PrimaryKey
   @Column
   public id!: string;
@@ -44,4 +49,7 @@ export default class Guild extends Model implements GuildI {
   @AllowNull(false)
   @Column
   public guessWord!: string;
+
+  @BelongsToMany(() => UserM, () => UserGuild)
+  public users!: UserM[];
 }

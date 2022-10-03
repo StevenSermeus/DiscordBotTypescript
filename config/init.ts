@@ -6,7 +6,7 @@ async function init(client: Client, sequelize: Sequelize) {
   await sequelize.authenticate();
   await sequelize.sync({ force: true });
   await setUpEvent(client);
-  await client.login(process.env["DISCORD_TOKEN"]);
+  // await client.login(process.env["DISCORD_TOKEN"]);
 }
 
 export default init;
