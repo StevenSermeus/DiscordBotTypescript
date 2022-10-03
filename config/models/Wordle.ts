@@ -5,7 +5,7 @@ import {
   PrimaryKey,
   AllowNull,
   Default,
-  BelongsToMany,
+  AutoIncrement,
 } from "sequelize-typescript";
 
 interface WordleI {
@@ -20,11 +20,12 @@ interface WordleI {
 })
 export default class WordleM extends Model implements WordleI {
   @PrimaryKey
+  @AutoIncrement
   @Column
   public id!: number;
 
-  @AllowNull(false)
   @Default(false)
+  @AllowNull(false)
   @Column
   public isToday!: boolean;
 

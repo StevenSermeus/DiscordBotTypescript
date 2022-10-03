@@ -22,6 +22,7 @@ interface GuildI {
   guessWord: string;
   users: Array<UserM>;
   notificationChannel: string;
+  streak: number;
 }
 
 @Table({
@@ -34,16 +35,19 @@ export default class GuildM extends Model implements GuildI {
   public id!: string;
 
   @AllowNull(false)
+  @Default(false)
   @NotEmpty
   @Column
   public isWordleFound!: boolean;
 
   @AllowNull(false)
+  @Default(false)
   @NotEmpty
   @Column
   public isWordle!: boolean;
 
   @AllowNull(false)
+  @Default(false)
   @NotEmpty
   @Column
   public isRanking!: boolean;
@@ -52,6 +56,11 @@ export default class GuildM extends Model implements GuildI {
   @AllowNull(false)
   @Column
   public guessWord!: string;
+
+  @Default(0)
+  @AllowNull(false)
+  @Column
+  public streak!: number;
 
   @BelongsToMany(() => UserM, () => UserGuild)
   public users!: UserM[];

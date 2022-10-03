@@ -42,7 +42,7 @@ export default class UserM extends Model implements UserI {
   dateOfBirth!: Date;
 
   @AllowNull(false)
-  @Default(null)
+  @Default(false)
   @Column
   isCollected!: boolean;
 

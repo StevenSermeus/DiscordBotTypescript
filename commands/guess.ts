@@ -1,40 +1,18 @@
-import { CommandInteraction } from "discord.js";
+import {
+  CommandInteraction,
+  GuildDefaultMessageNotifications,
+} from "discord.js";
+import GuildM from "../config/models/Guild";
+import WordleM from "../config/models/Wordle";
 import words from "../config/wordList";
 
 const guess: any = {
   name: "guess",
   description: "Guess a word !",
-  execute(interaction: CommandInteraction, args: any) {
+  async execute(interaction: CommandInteraction, args: any) {
     const guess: string = args.get("word").value.toUpperCase();
-    if (!guess) return interaction.reply("Please enter a word to guess");
-    if (guess.length != 5)
-      return interaction.reply("Please enter a 5 letter word");
-    if (!words.includes(guess))
-      return interaction.reply("Please enter a valid word");
-    //get word from db
-    let tries: Array<string> = [];
-    try {
-      tries = this.getTries(interaction);
-    } catch (err) {
-      interaction.reply("Error getting tries retry later");
-    }
-
-    tries.push(guess);
-    console.log(tries);
-    const wordOfTheDay: string = "HELLO";
-
-    let message: string = "";
-
-    for (const trie of tries) {
-      message += this.getLine(trie, wordOfTheDay);
-    }
-
-    if (wordOfTheDay === guess) {
-      message += "You won !";
-      //handle the win for database
-    }
-
-    return interaction.reply(message);
+    if (interaction.guildId == null)
+      return interaction.reply("No guild id found");
   },
   options: [
     {
@@ -44,13 +22,25 @@ const guess: any = {
     },
   ],
   choices: [],
-  getTries(interaction: CommandInteraction) {
+  async getTries(interaction: CommandInteraction) {
     //get the guildid from interaction
-    const guildId: string = interaction.guildId?.toString() || "";
-    if (guildId === "") throw new Error("No guild id found");
 
-    const tries: Array<string> = ["SALUT"];
-    return tries;
+    if (interaction.guildId) {
+      const guild = await GuildM.findByPk(interaction.guildId);
+      if (!guild) {
+        let newGuild = await new GuildM({
+          id: interaction.guildId,
+        });
+        await newGuild.save();
+        throw new Error("Wordle isn't set");
+      }
+      if (guild == null || !guild.isWordle) {
+        throw new Error("Wordle is not enabled");
+      }
+      const tries = guild.guessWord.split(",");
+      return { tries, guild };
+    }
+    throw new Error("GuildId is not defined");
   },
   getLine(word: string, solution: string) {
     let line: string = "";

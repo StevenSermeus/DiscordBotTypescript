@@ -1,13 +1,10 @@
-import { StringifyOptions } from "querystring";
 import {
   Table,
   Model,
   Column,
   PrimaryKey,
   AllowNull,
-  NotEmpty,
   Default,
-  BelongsToMany,
   ForeignKey,
   AutoIncrement,
 } from "sequelize-typescript";
@@ -52,7 +49,7 @@ export default class GameM extends Model implements GameI {
   public type!: string;
 
   @AllowNull(false)
-  @Default(0)
+  @Default(false)
   @Column
   public turn!: boolean;
 
