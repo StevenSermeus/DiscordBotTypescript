@@ -5,6 +5,7 @@ import {
   AllowNull,
   Default,
   ForeignKey,
+  PrimaryKey,
 } from "sequelize-typescript";
 import UserM from "./User";
 import GuildM from "./Guild";
@@ -23,10 +24,12 @@ interface UserGuildI {
   timestamps: true,
 })
 export default class UserGuildM extends Model implements UserGuildI {
+  @PrimaryKey
   @ForeignKey(() => UserM)
   @Column
   public userId!: string;
 
+  @PrimaryKey
   @ForeignKey(() => GuildM)
   @Column
   public guildId!: string;

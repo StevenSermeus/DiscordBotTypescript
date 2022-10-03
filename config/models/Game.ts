@@ -14,7 +14,6 @@ import {
 
 import UserM from "./User";
 import GuildM from "./Guild";
-import { Col } from "sequelize/types/utils";
 
 interface GameI {
   id: number;
@@ -24,6 +23,7 @@ interface GameI {
   type: string;
   turn: boolean;
   isFinished: boolean;
+  bet: number;
 }
 
 @Table({
@@ -51,13 +51,18 @@ export default class GameM extends Model implements GameI {
   @Column
   public type!: string;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   public turn!: boolean;
 
-  @Column
   @AllowNull(false)
   @Default(false)
+  @Column
   public isFinished!: boolean;
+
+  @AllowNull(true)
+  @Default(null)
+  @Column
+  public bet!: number;
 }

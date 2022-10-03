@@ -1,3 +1,4 @@
+import { col } from "sequelize";
 import {
   Table,
   Model,
@@ -8,6 +9,7 @@ import {
   Default,
   BelongsToMany,
 } from "sequelize-typescript";
+import { Col } from "sequelize/types/utils";
 
 import UserM from "./User";
 import UserGuild from "./UserGuild";
@@ -19,6 +21,7 @@ interface GuildI {
   isRanking: boolean;
   guessWord: string;
   users: Array<UserM>;
+  notificationChannel: string;
 }
 
 @Table({
@@ -52,4 +55,9 @@ export default class GuildM extends Model implements GuildI {
 
   @BelongsToMany(() => UserM, () => UserGuild)
   public users!: UserM[];
+
+  @AllowNull(true)
+  @Default(null)
+  @Column
+  notificationChannel!: string;
 }

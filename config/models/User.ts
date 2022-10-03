@@ -13,6 +13,10 @@ interface UserI {
   id: string;
   coins: number;
   guilds: Array<GuildM>;
+  dateOfBirth: Date;
+  isCollected: boolean;
+  isXpBoost: boolean;
+  isCoinBoost: boolean;
 }
 
 @Table({
@@ -31,4 +35,24 @@ export default class UserM extends Model implements UserI {
 
   @BelongsToMany(() => GuildM, () => UserGuild)
   public guilds!: GuildM[];
+
+  @AllowNull(true)
+  @Default(null)
+  @Column
+  dateOfBirth!: Date;
+
+  @AllowNull(false)
+  @Default(null)
+  @Column
+  isCollected!: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isXpBoost!: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isCoinBoost!: boolean;
 }
