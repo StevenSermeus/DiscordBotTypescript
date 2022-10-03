@@ -43,7 +43,6 @@ const job = new CronJob(
       console.error(err);
     }
   },
-  function () {},
   true,
   "Europe/Paris"
 );

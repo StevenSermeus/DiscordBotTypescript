@@ -1,12 +1,12 @@
 import client from "../config/discordClient";
 import commands from "../commands/";
 import { SlashCommandBuilder } from "@discordjs/builders";
-
+const jsonInfo = require("../package.json");
 async function readyHandeler() {
   client.user?.setPresence({
     activities: [
       {
-        name: `Test`,
+        name: `v${jsonInfo.version} | dev`,
       },
     ],
   });
