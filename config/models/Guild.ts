@@ -65,8 +65,8 @@ export default class GuildM extends Model implements GuildI {
   @BelongsToMany(() => UserM, () => UserGuild)
   public users!: UserM[];
 
-  @AllowNull(true)
-  @Default(null)
+  @AllowNull(false)
+  @Default("")
   @Column
   notificationChannel!: string;
 }

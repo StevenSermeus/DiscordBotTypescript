@@ -11,8 +11,72 @@ const guess: any = {
   description: "Guess a word !",
   async execute(interaction: CommandInteraction, args: any) {
     const guess: string = args.get("word").value.toUpperCase();
-    if (interaction.guildId == null)
-      return interaction.reply("No guild id found");
+    /*verif of input*/
+    if (interaction.guildId === null)
+      return interaction.reply(
+        "Utiliser cette commande dans un channel de server"
+      );
+    try {
+      const data = await this.getTries(interaction);
+      let guild = data.guild;
+      let tries = data.tries;
+
+      if (guess.length != 5)
+        return interaction.reply(
+          "Ce wordle fonctionne avec un mot de 5 lettres"
+        );
+
+      const wordleOfTheDay: WordleM | null = await WordleM.findOne({
+        where: {
+          isToday: true,
+        },
+      });
+
+      if (wordleOfTheDay == null)
+        return interaction.reply("Il n'y a pas de mot du jour pour le moment");
+      if (!guild) return interaction.reply("Le server n'a pas activé wordle !");
+
+      if (guild.isWordleFound)
+        return interaction.reply(
+          `Le mot à déjà été trouvé: \n ${this.getMessage(
+            tries,
+            wordleOfTheDay.word
+          )}`
+        );
+
+      if (tries.length == 6)
+        return interaction.reply(
+          `Il n'y a plus d'essai disponible, le mot était${
+            wordleOfTheDay.word
+          }:\n${this.getMessage(tries, wordleOfTheDay.word)}`
+        );
+
+      if (!words.includes(guess))
+        return interaction.reply("Le mot n'est pas dans la list !");
+
+      tries.push(guess);
+      tries = tries.filter((x: string) => x != "");
+
+      if (guess === wordleOfTheDay.word) {
+        guild.isWordleFound = true;
+        guild.guessWord = tries.join(",");
+        await guild.save();
+        return interaction.reply(
+          "Wow tu as trouvé GG ! \n" +
+            this.getMessage(tries, wordleOfTheDay.word)
+        );
+      }
+      guild.guessWord = tries.join(",");
+      await guild.save();
+      return interaction.reply(
+        `Le mot n'a pas été trouvé:\n${this.getMessage(
+          tries,
+          wordleOfTheDay.word
+        )}`
+      );
+    } catch (error: any) {
+      return interaction.reply(error.message);
+    }
   },
   options: [
     {
@@ -28,31 +92,21 @@ const guess: any = {
     if (interaction.guildId) {
       const guild = await GuildM.findByPk(interaction.guildId);
       if (!guild) {
-        let newGuild = await new GuildM({
-          id: interaction.guildId,
-        });
-        await newGuild.save();
-        throw new Error("Wordle isn't set");
-      }
-      if (guild == null || !guild.isWordle) {
-        throw new Error("Wordle is not enabled");
+        return { tries: [], guild: null };
       }
       const tries = guild.guessWord.split(",");
-      return { tries, guild };
+      return { tries: tries, guild: guild };
     }
     throw new Error("GuildId is not defined");
   },
   getLine(word: string, solution: string) {
     let line: string = "";
     let tempWord: string = word;
+
     for (let i = 0; i < word.length; i++) {
-      if (word[i] == solution[i]) {
-        tempWord = tempWord.substring(0, i) + " " + tempWord.substring(i + 1);
-      }
-    }
-    for (let i = 0; i < word.length; i++) {
-      if (tempWord[i] === " ") {
+      if (tempWord[i] === solution[i]) {
         line += "🟩";
+        tempWord = tempWord.slice(0, i) + " " + tempWord.slice(i + 1);
       } else if (solution.includes(tempWord[i])) {
         line += "🟨";
         tempWord = tempWord.substring(0, i) + " " + tempWord.substring(i + 1);
@@ -62,6 +116,13 @@ const guess: any = {
     }
 
     return `${line} : ${word}\n`;
+  },
+  getMessage(tries: Array<string>, wordleOfTheDay: string) {
+    let message = "";
+    for (let trie of tries) {
+      message += this.getLine(trie, wordleOfTheDay);
+    }
+    return message;
   },
 };
 
