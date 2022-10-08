@@ -108,7 +108,22 @@ const guess: any = {
         line += "🟩";
         tempWord = tempWord.slice(0, i) + " " + tempWord.slice(i + 1);
       } else if (solution.includes(tempWord[i])) {
-        line += "🟨";
+        const arrayOfIndex = solution
+          .split("")
+          .map((x: string, i: number) => (x === tempWord[i] ? i : null))
+          .filter((x: number | null) => x != null);
+        let isNotPlace = false;
+        for (let j = 0; j < arrayOfIndex.length; j++) {
+          if (arrayOfIndex[j] !== i) {
+            isNotPlace = true;
+          }
+        }
+        if (isNotPlace) {
+          line += "🟨";
+        } else {
+          line += "⬜";
+        }
+
         tempWord = tempWord.substring(0, i) + " " + tempWord.substring(i + 1);
       } else {
         line += "⬜";
