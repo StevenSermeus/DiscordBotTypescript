@@ -1,6 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
 
-
 function createClient() {
   const client = new Client({
     intents: [
@@ -8,6 +7,7 @@ function createClient() {
       GatewayIntentBits.GuildIntegrations,
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent,
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildVoiceStates,
     ],

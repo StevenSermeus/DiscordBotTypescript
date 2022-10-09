@@ -9,7 +9,7 @@ import client from "./discordClient";
 
 function startJob() {
   cron.schedule(
-    "42 14 * * *",
+    "00 8 * * *",
     async function () {
       let wordle = await WordleM.findOne({ where: { isToday: true } });
       if (wordle) {

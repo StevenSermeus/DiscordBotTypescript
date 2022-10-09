@@ -14,6 +14,7 @@ interface UserGuildI {
   userId: string;
   guildId: string;
   xp: number;
+  level: number;
   messageSent: number;
   timeSpentVoice: number;
   joinedVoiceAt: number;
@@ -43,6 +44,11 @@ export default class UserGuildM extends Model implements UserGuildI {
   @Default(0)
   @Column
   messageSent!: number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  level!: number;
 
   @AllowNull(false)
   @Default(0)

@@ -1,11 +1,11 @@
 {
   "name": "discordbottypescript",
-  "version": "0.1.1-α",
+  "version": "1.0.0 β",
   "description": "",
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --legacy-watch app.ts",
+    "dev": "nodemon app.ts --legacy-watch",
     "start": "node app.ts",
     "build": "tsc",
     "production": "tsc && node dist/app.js"

@@ -102,34 +102,30 @@ const guess: any = {
   getLine(word: string, solution: string) {
     let line: string = "";
     let tempWord: string = word;
+    let tempSolution: string = solution;
 
-    for (let i = 0; i < word.length; i++) {
-      if (tempWord[i] === solution[i]) {
-        line += "🟩";
+    for (let i = 0; i < solution.length; i++) {
+      if (solution[i] === tempWord[i]) {
         tempWord = tempWord.slice(0, i) + " " + tempWord.slice(i + 1);
-      } else if (solution.includes(tempWord[i])) {
-        const arrayOfIndex = solution
-          .split("")
-          .map((x: string, i: number) => (x === tempWord[i] ? i : null))
-          .filter((x: number | null) => x != null);
-        let isNotPlace = false;
-        for (let j = 0; j < arrayOfIndex.length; j++) {
-          if (arrayOfIndex[j] !== i) {
-            isNotPlace = true;
-          }
-        }
-        if (isNotPlace) {
+        tempSolution =
+          tempSolution.slice(0, i) + " " + tempSolution.slice(i + 1);
+      }
+    }
+    for (let i = 0; i < solution.length; i++) {
+      if (tempWord[i] === "") {
+        line += "🟩";
+      } else {
+        if (tempSolution.includes(tempWord[i])) {
           line += "🟨";
+          tempSolution =
+            tempSolution.slice(0, tempSolution.indexOf(tempWord[i])) +
+            " " +
+            tempSolution.slice(tempSolution.indexOf(tempWord[i]) + 1);
         } else {
           line += "⬜";
         }
-
-        tempWord = tempWord.substring(0, i) + " " + tempWord.substring(i + 1);
-      } else {
-        line += "⬜";
       }
     }
-
     return `${line} : ${word}\n`;
   },
   getMessage(tries: Array<string>, wordleOfTheDay: string) {
