@@ -112,7 +112,7 @@ const guess: any = {
       }
     }
     for (let i = 0; i < solution.length; i++) {
-      if (tempWord[i] === "") {
+      if (tempWord[i] === " ") {
         line += "🟩";
       } else {
         if (tempSolution.includes(tempWord[i])) {

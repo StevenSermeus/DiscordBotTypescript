@@ -3,6 +3,7 @@ import GuildM from "../config/models/Guild";
 import UserGuildM from "../config/models/UserGuild";
 import client from "../config/discordClient";
 import UserM from "../config/models/User";
+import { REPLServer } from "repl";
 async function messageHandler(message: Message) {
   if (message.author.bot) return;
 
@@ -10,12 +11,7 @@ async function messageHandler(message: Message) {
 
   if (!message.guildId) return;
 
-  if (message.content.includes("odoo")) message.reply("Non le démon");
-
-  if (message.content.includes("discord")) message.react("🤖");
-
-  if (message.content.toLowerCase().includes("bg"))
-    (await message.reply("Benjamin Georges ?")).react("😍");
+  easterEgg(message);
 
   const guildDB = await GuildM.findByPk(message.guildId);
   if (!guildDB) return;
@@ -56,7 +52,7 @@ async function messageHandler(message: Message) {
       );
     } else {
       let channel = client.channels.cache.get(guildDB.notificationChannel);
-      if (channel?.isTextBased()) {
+      if (channel !== undefined && channel.isTextBased()) {
         channel.send(
           `Félicitation <@${message.author.id}> tu as atteint le niveau ${userDB.xp}`
         );
@@ -66,4 +62,43 @@ async function messageHandler(message: Message) {
   await userDB.save();
 }
 
+async function easterEgg(message: Message) {
+  const content = message.content.toLowerCase();
+
+  if (content == "quoi" || content == "quoi ?" || content == "quoi?")
+    return message.reply("feur");
+
+  if (content.includes("odoo")) return message.reply("Non le démon");
+
+  if (content.includes("discord")) return message.react("🤖");
+
+  if (content.includes("chacha")) return message.reply("Mams");
+
+  if (content.includes("boubou")) {
+    setTimeout(
+      () =>
+        message.reply(
+          `J'avais du café pas chaud désolé du retard. Oh c'est que 5 minutes en plus !`
+        ),
+      5 * 60 * 1000
+    );
+  }
+
+  if (content == "while(true)") {
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        message.channel.send("BIP BOU BIP ....");
+      }, i * 200);
+    }
+    return message.reply("Et le clean code merde");
+  }
+
+  if (content.includes("bg"))
+    return (await message.reply("Le prof de BDD quel bg :3")).react("😍");
+
+  if (content.includes("joris")) return message.reply("if(estCon == true)");
+
+  if (content.includes("steven"))
+    return message.reply("Docker ? Git ?, ... Le débugger a votre service");
+}
 export default messageHandler;
