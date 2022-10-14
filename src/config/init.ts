@@ -56,13 +56,16 @@ async function init(client: Client, sequelize: Sequelize) {
   await sequelize.authenticate();
   await sequelize.sync({ force: true, logging: false });
   await setUpEvent(client);
-
-  let newWordle = new WordleM({
-    isToday: true,
-    word: words[Math.floor(Math.random() * words.length)],
-  });
+  const wordle = WordleM.findOne({ where: { isToday: true } });
+  if (!wordle) {
+    let newWordle = new WordleM({
+      isToday: true,
+      word: words[Math.floor(Math.random() * words.length)],
+    });
+    await newWordle.save();
+  }
   await startJob();
-  await newWordle.save();
+
   await client.login(process.env["BOT_TOKEN"]);
 }
 
