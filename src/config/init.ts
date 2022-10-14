@@ -4,6 +4,7 @@ import setUpEvent from "./setUpEvent";
 import WordleM from "./models/Wordle";
 import words from "./wordList";
 import GuildM from "./models/Guild";
+import UserGuildM from "./models/UserGuild";
 const cron = require("node-cron");
 import client from "./discordClient";
 
@@ -54,7 +55,15 @@ function startJob() {
 }
 async function init(client: Client, sequelize: Sequelize) {
   await sequelize.authenticate();
-  await sequelize.sync({ force: true, logging: false });
+  //await sequelize.sync({ force: true, logging: false });
+  const userGuild = await UserGuildM.findAll();
+  for (let user of userGuild) {
+    if (user.joinedVoiceAt !== 0) {
+      user.joinedVoiceAt = 0;
+      await user.save();
+    }
+  }
+
   await setUpEvent(client);
   const wordle = WordleM.findOne({ where: { isToday: true } });
   if (!wordle) {

@@ -47,6 +47,7 @@ async function voiceStatusUpdateHandler(
       },
     });
     if (profil.joinedVoiceAt === null) return;
+    if (profil.joinedVoiceAt === 0) return;
     const time = Date.now() - profil.joinedVoiceAt;
     profil.joinedVoiceAt = 0;
     profil.xp += Math.round((time / 60000) * 2.5);
