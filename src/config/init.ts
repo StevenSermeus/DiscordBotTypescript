@@ -36,7 +36,7 @@ function startJob() {
           await guild.save();
         }
         //if guild notificationChannel != null send message
-        if (guild.notificationChannel != "") {
+        if (guild.notificationChannel !== "") {
           let channel = client.channels.cache.get(guild.notificationChannel);
           if (channel?.isTextBased()) {
             channel.send(

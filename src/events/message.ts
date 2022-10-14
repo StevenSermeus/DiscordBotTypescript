@@ -34,27 +34,24 @@ async function messageHandler(message: Message) {
       xp: 0,
     },
   });
-
+  await userDB.increment("messageSent", { by: 1 });
   await userDB.increment("xp", { by: 3 });
 
   const levelCap = 5 * (userDB.level ^ 2) + 50 * userDB.level + 100;
 
-  console.log(levelCap);
-  console.log(userDB.messageSent);
   if (userDB.xp >= levelCap) {
     await userDB.increment("level");
     await userDB.update({ xp: 0 });
-    console.log(guildDB.notificationChannel !== "");
-    console.log(guildDB.notificationChannel);
+
     if (guildDB.notificationChannel === "") {
       message.channel.send(
-        `Félicitation <@${message.author.id}> tu as atteint le niveau ${userDB.xp}`
+        `Félicitation <@${message.author.id}> tu as atteint le niveau ${userDB.level}`
       );
     } else {
       let channel = client.channels.cache.get(guildDB.notificationChannel);
       if (channel !== undefined && channel.isTextBased()) {
         channel.send(
-          `Félicitation <@${message.author.id}> tu as atteint le niveau ${userDB.xp}`
+          `Félicitation <@${message.author.id}> tu as atteint le niveau ${userDB.level}`
         );
       }
     }
@@ -101,4 +98,5 @@ async function easterEgg(message: Message) {
   if (content.includes("steven"))
     return message.reply("Docker ? Git ?, ... Le débugger a votre service");
 }
+
 export default messageHandler;

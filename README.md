@@ -2,7 +2,8 @@
 
 ## Todo
 
--Wordle
--Morpion
--Puissance 4
--Annif
+-Commands
+
+-setBirthDay
+-profile
+

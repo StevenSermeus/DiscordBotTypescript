@@ -1,0 +1,15 @@
+FROM node:current-alpine
+
+COPY package.json ./
+
+WORKDIR /app
+
+RUN npm install
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY . /app
+
+WORKDIR /app
+
+CMD ["npm","run","dev"]

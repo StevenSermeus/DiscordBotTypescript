@@ -6,6 +6,7 @@ import {
   Default,
   ForeignKey,
   PrimaryKey,
+  DataType,
 } from "sequelize-typescript";
 import UserM from "./User";
 import GuildM from "./Guild";
@@ -17,7 +18,8 @@ interface UserGuildI {
   level: number;
   messageSent: number;
   timeSpentVoice: number;
-  joinedVoiceAt: number;
+  joinedVoiceAt: number | null;
+  isXpBoosted: boolean;
 }
 
 @Table({
@@ -46,17 +48,21 @@ export default class UserGuildM extends Model implements UserGuildI {
   messageSent!: number;
 
   @AllowNull(false)
-  @Default(0)
+  @Default(1)
   @Column
   level!: number;
 
   @AllowNull(false)
   @Default(0)
-  @Column
+  @Column(DataType.BIGINT)
   timeSpentVoice!: number;
 
-  @AllowNull(false)
   @Default(0)
-  @Column
+  @Column(DataType.BIGINT)
   joinedVoiceAt!: number;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isXpBoosted!: boolean;
 }
