@@ -65,7 +65,7 @@ async function init(client: Client, sequelize: Sequelize) {
   }
 
   await setUpEvent(client);
-  const wordle = WordleM.findOne({ where: { isToday: true } });
+  const wordle = await WordleM.findOne({ where: { isToday: true } });
   if (!wordle) {
     let newWordle = new WordleM({
       isToday: true,
