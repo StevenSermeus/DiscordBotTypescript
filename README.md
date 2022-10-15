@@ -2,8 +2,15 @@
 
 ## Todo
 
--Commands
+  -A way to win coins
 
--setBirthDay
--profile
+Use coins:
+
+  -Buy custom for profile
+
+  -Buy xp boost ?
+
+More mini game:
+
+Idea in issue
 
